@@ -7,11 +7,7 @@ const SearchBar = ({ onSearch }) => {
   const [showAddShortcutModal, setShowAddShortcutModal] = useState(false);
   const [shortcuts, setShortcuts] = useState([]);
 
-  const handleSearch = () => {
-    if (query.trim() !== '') {
-      onSearch(query);
-    }
-  };
+
 
   const toggleAddShortcutModal = () => {
     setShowAddShortcutModal(!showAddShortcutModal);
@@ -34,25 +30,38 @@ const SearchBar = ({ onSearch }) => {
     setShortcuts(updatedShortcuts);
   };
 
+  const handleKeyPress = (e) => {
+    console.log('handleKeyPress triggered');
+    if (e.key === 'Enter') {
+      console.log('Enter key pressed');
+      onSearch(query);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col items-center justify-center mt-16">
       <h2 className="text-center mb-8 text-8xl font-semibold text-[#AAC7FF]">Google</h2>
 
-      <div>
+      <div className=''>
+     <div>
       <input
       type="text"
-      className=" p-2 border border-gray-300 rounded-full focus:outline-none"
+      className="p-2 w-96 border  border-gray-300 rounded-full focus:outline-none  
+      bg-[#333C4D] text-white
+      "
       placeholder="Search Google..."
       value={query}
-      onChange={(e) => setQuery(e.target.value)}
+      onChange={(e) =>
+        {
+          setQuery(e.target.value)
+          console.log("Hello")
+        }
+        }
+        onKeyDown={handleKeyPress}
     />
-    <button
-      className="bg-blue-500 text-white p-2 rounded-r-md"
-      onClick={handleSearch}
-    >
-      Search
-    </button>
+   
+     </div>
       </div>
         <button
           className="mt-4 ml-2 bg-green-500 text-white p-2 rounded-full"

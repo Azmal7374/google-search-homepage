@@ -18,7 +18,7 @@ const Main = () => {
   };
     return (
         <div className="">
-            <Navbar></Navbar>
+            <Navbar onSearch={handleSearch}></Navbar>
             <SearchBar onSearch={handleSearch} />
       <SearchResults results={searchResults} />
 

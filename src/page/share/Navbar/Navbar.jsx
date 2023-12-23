@@ -4,11 +4,22 @@ import { FaEllipsisV, FaFastBackward, FaStepBackward, FaStepForward, FaFastForwa
 import { IoIosArrowRoundForward, IoIosStarOutline, IoMdClose, IoMdRefresh, IoMdStar} from "react-icons/io";
 import {PiDotsThreeVerticalBold } from "react-icons/pi";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { BsReverseLayoutSidebarReverse } from "react-icons/bs";
-const Navbar = ({ onSearch }) => {
+import { BsIncognito, BsReverseLayoutSidebarReverse, BsWindowPlus } from "react-icons/bs";
+import { MdTab } from "react-icons/md";
+const Navbar = ({ onSearch}) => {
   const [showChromeInfo, setShowChromeInfo] = useState(false);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [query, setQuery] = useState('');
+   console.log(query)
+
+   const handleKeyPress = (e) => {
+    console.log('handleKeyPress triggered');
+    if (e.key === 'Enter') {
+      console.log('Enter key pressed');
+      onSearch(query);
+    }
+  };
+
 
   const openChromeInfo = () => {
     setShowChromeInfo(true);
@@ -22,16 +33,9 @@ const Navbar = ({ onSearch }) => {
     setShowChromeInfo(false);
     setShowMoreInfo(false);
   };
-
-  const handleSearch = () => {
-    if (query.trim() !== '') {
-      onSearch(query);
-    }
-  };
-
+ 
   const [showStarModal, setShowStarModal] = useState(false);
   const [starred, setStarred] = useState(false);
-  const [starName, setStarName] = useState('');
    
   const openStarModal = () => {
    
@@ -68,60 +72,70 @@ const handleRemoveBookmark = () => {
       <div className="flex items-center flex-1 ml-4 mr-4">
       <div className="relative w-full">
         <span className="absolute left-2 top-3">
-          <FaGoogle className="text-blue-500" />
+          <FaGoogle className="text-gray-200" />
         </span>
         <input
           type="text"
           placeholder="Search Google or type a URL"
-          className="w-full p-2 pl-8 border border-gray-300 rounded-full focus:outline-none"
+          className="bg-[#333C4D] text-white w-full p-2 pl-8 border border-gray-300 rounded-full focus:outline-none"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+      onChange={(e) =>
+        {
+          setQuery(e.target.value)
+          console.log("Hello")
+        }
+        }
+        onKeyDown={handleKeyPress}
         />
         <span className="absolute right-2 top-2">
-        {starred ? <IoMdStar className="h-6 w-6 text-yellow-500" onClick={ handleStarDone} /> : <IoIosStarOutline className="h-6 w-6  " onClick={openStarModal } />}
+        {starred ? <IoMdStar className="h-6 w-6 text-gray-200" onClick={ handleStarDone} /> : <IoIosStarOutline className="h-6 w-6 text-gray-200 " onClick={openStarModal } />}
         </span>
+
+    
       </div>
 
       {/* Star Modal */}
       {showStarModal && (
-        <div className=" fixed inset-0   flex  justify-center mt-16">
-          <div className="bg-white p-4 border border-gray-300 rounded w-96 h-72">
-            <div className="flex justify-end">
-              <IoMdClose className="h-6 w-6 cursor-pointer" onClick={closeStarModal} />
-            </div>
-            <h2 className="text-lg font-semibold mb-4">Star Item</h2>
-            <div className="mb-4 w-80">
-              <label className="block text-sm font-medium text-gray-700">Name:</label>
-              <input
-                type="text"
-                value={starName}
-                onChange={(e) => setStarName(e.target.value)}
-                className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Choose Folders:</label>
-              <select id="country" name="country" autoComplete="country-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-              <option>United States</option>
-              <option>Canada</option>
-              <option>Mexico</option>
-            </select>
-            </div>
-            <div className="flex justify-end">
-              <button
-                className="bg-blue-500 text-white p-2 rounded mr-2"
-                onClick={handleStarDone}
-              >
-                Done
-              </button>
-              <button
-                className="bg-red-500 text-white p-2 rounded"
-                onClick={handleRemoveBookmark}
-              >
-                Remove
-              </button>
-            </div>
-          </div>
+        <div className=" fixed inset-0   flex  justify-center  mt-14">
+         
+         <div className="bg-black p-4 border border-gray-300 rounded w-96 h-72">
+         <div className="flex justify-between">
+         <h2 className="text-lg font-semibold mb-4 text-gray-200">Edit Bookmark</h2>
+           <IoMdClose className="h-6 w-6 cursor-pointer text-gray-200" onClick={closeStarModal} />
+         </div>
+        
+         <div className="mb-4 w-80">
+           <label className="block text-sm font-medium text-gray-200">Name:</label>
+           <input
+             type="text"
+             className="text-white mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none bg-black"
+            
+           />
+         </div>
+         <div className="mb-4">
+           <label className="block text-sm font-medium text-gray-200">Choose Folders:</label>
+           <select id="country" name="country" autoComplete="country-name" className="px-4 block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 bg-black text-white">
+           <option>All Bookmarks</option>
+           <option>Bookmarks Bar</option>
+           <hr className='pt-4 ' />
+           <option value="">Choose Another Folder</option>
+         </select>
+         </div>
+         <div className="flex justify-end">
+           <button
+             className="bg-blue-500 text-white p-2 rounded mr-2"
+             onClick={handleStarDone}
+           >
+             Done
+           </button>
+           <button
+             className="bg-red-500 text-white p-2 rounded"
+             onClick={handleRemoveBookmark}
+           >
+             Remove
+           </button>
+         </div>
+       </div>
         </div>
       )}
      
@@ -174,13 +188,43 @@ const handleRemoveBookmark = () => {
           onClick={closeModals}
         >
           <div
-            className="bg-white p-4  shadow-xl  border rounded"
+            className="bg-black text-gray-200 p-4  shadow-xl  border rounded w-1/2"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-lg font-semibold mb-4">More Information</h2>
-            {/* Add more information here */}
-            <p>Additional details...</p>
-            {/* ... */}
+             <div className="1">
+             <div className=" flex justify-between">
+             <div className="flex gap-4 items-center">
+             <MdTab />
+             <p>New Tab</p>
+             
+             </div>
+             <p>Ctrl+T</p>
+             </div>
+
+             <div className=" flex justify-between">
+             <div className="flex gap-4 items-center">
+             <BsWindowPlus />
+             <p>New Window</p>
+             
+             </div>
+             <p>Ctrl+T</p>
+             </div>
+
+             <div className=" flex justify-between">
+             <div className="flex gap-4 items-center">
+             <BsIncognito />
+             <p>New Incognito Window</p>
+             
+             </div>
+             <p>Ctrl+Shift+T</p>
+             </div>
+             <div className=""></div>
+             </div>
+             <hr className="mt-4" />
+             
+             <div></div>
+             <div></div>
+             <div></div>
           </div>
         </div>
       )}

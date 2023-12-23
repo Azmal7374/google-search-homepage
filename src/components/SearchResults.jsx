@@ -3,15 +3,14 @@ import React from 'react';
 
 const SearchResults = ({ results }) => {
   return (
-    <div className="mt-8">
-      <p className="text-gray-600">Results:</p>
+    <div className="mt-8 text-center">
       <ul>
         {results.map((result) => (
           <li key={result.id}>
-            <a href={result.url} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+            <a href={result.url} className="text-white font-bold text-2xl" target="_blank" rel="noopener noreferrer">
               {result.title}
             </a>
-            <p className="text-gray-500">{result.description}</p>
+            <p className="text-[#AAC7FF] text-xl font-bold">{result.description}</p>
           </li>
         ))}
       </ul>
